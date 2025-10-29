@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SkillSwap • Dashboard</title>
+  <link rel="stylesheet" href="/styles.css"/>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav">
+      <div class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12l7.5-7.5L12 6l-6 6 6 6-1.5 1.5L3 12zM12 18l1.5-1.5L18 12l-4.5-4.5L12 6l7.5 7.5L12 21z" fill="#4fa3ff"/></svg>Skill<b>Swap</b></div>
+      <div class="row"><span id="me" class="muted small"></span><button onclick="logout()">Sair</button></div>
+    </div>
+
+    <div class="card">
+      <h2>Minhas Habilidades</h2>
+      <div class="grid g3">
+        <input id="oname" placeholder="Ofereço: ex. Violão"/>
+        <input id="odesc" placeholder="Descrição curta"/>
+        <button class="pri" onclick="addOffered()">Adicionar</button>
+      </div>
+      <table id="offered"><thead><tr><th>Habilidade</th><th>Descrição</th><th>Destaque</th><th>Ações</th></tr></thead><tbody></tbody></table>
+    </div>
+
+    <div class="card">
+      <h2>Quero Aprender</h2>
+      <div class="grid g3">
+        <input id="wname" placeholder="Desejo: ex. Inglês"/>
+        <input id="wdesc" placeholder="Descrição"/>
+        <button class="pri" onclick="addWanted()">Adicionar</button>
+      </div>
+      <table id="wanted"><thead><tr><th>Habilidade</th><th>Descrição</th><th>Ações</th></tr></thead><tbody></tbody></table>
+    </div>
+
+    <div class="card">
+      <h2>💬 Conversas & Matches</h2>
+      <div class="row">
+        <button onclick="loadChats()">Atualizar conversas</button>
+        <button onclick="loadMatches()">Ver matches recentes</button>
+        <a class="badge" href="/chat">Abrir Chat</a>
+      </div>
+      <div id="chats" class="list muted"></div>
+      <div id="matches" class="muted" style="margin-top:8px"></div>
+    </div>
+
+    <div class="card">
+      <h2>Premium & Doação ao Site</h2>
+      <div class="row">
+        <button class="pri" onclick="buyPremium()">Ativar Premium (R$ 9,90)</button>
+        <button onclick="donateSite()">Doar R$ 5,00 ao SkillSwap</button>
+      </div>
+      <div id="pix" class="center" style="margin-top:10px"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="/js/app.js"></script>
+  <script>
+    guard();
+    const socket = io('/', { auth: { token: token() } });
+    socket.on('match', (m)=> toast(`🎯 Novo match! Usuário #${m.from} compatível com "${m.skill}"`));
+    socket.on('message', (msg)=> toast(`💬 Nova mensagem de #${msg.from}: ${msg.content.substring(0,40)}`));
+
+    me(); loadOffered(); loadWanted(); loadChats(); loadMatches();
+  </script>
+</body>
+</html>

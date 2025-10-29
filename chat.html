@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SkillSwap • Chat</title>
+  <link rel="stylesheet" href="/styles.css"/>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav">
+      <div class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12l7.5-7.5L12 6l-6 6 6 6-1.5 1.5L3 12zM12 18l1.5-1.5L18 12l-4.5-4.5L12 6l7.5 7.5L12 21z" fill="#4fa3ff"/></svg>Skill<b>Swap</b></div>
+      <div class="row"><a class="badge" href="/dashboard">Voltar</a></div>
+    </div>
+
+    <div class="card">
+      <h2>Chat</h2>
+      <div class="row">
+        <input id="other" placeholder="ID do usuário" style="max-width:160px"/>
+        <button class="pri" onclick="openChat()">Abrir</button>
+      </div>
+      <div id="typing" class="typing" style="display:none">digitando...</div>
+      <div id="chat" class="chat"></div>
+      <div class="row">
+        <input id="msg" style="flex:1" placeholder="Digite sua mensagem"/>
+        <button class="pri" onclick="sendMsg()">Enviar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+  <script>
+    guard();
+    const socket = io('/', { auth: { token: token() } });
+    socket.on('message', m => {
+      if(Number(ge('other').value)===Number(m.from)){ append(m.content,true); }
+    });
+    socket.on('typing', ({from}) => {
+      if(Number(ge('other').value)===Number(from)){
+        ge('typing').style.display='block';
+        setTimeout(()=>ge('typing').style.display='none',1200);
+      }
+    });
+
+    function append(text, isMe){
+      const d = document.createElement('div');
+      d.className = 'bubble ' + (isMe ? 'me':'them');
+      d.textContent = text;
+      ge('chat').appendChild(d);
+      ge('chat').scrollTop = ge('chat').scrollHeight;
+    }
+  </script>
+</body>
+</html>

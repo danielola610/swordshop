@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SkillSwap • Admin</title>
+  <link rel="stylesheet" href="/styles.css"/>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav">
+      <div class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12l7.5-7.5L12 6l-6 6 6 6-1.5 1.5L3 12zM12 18l1.5-1.5L18 12l-4.5-4.5L12 6l7.5 7.5L12 21z" fill="#4fa3ff"/></svg>Skill<b>Swap</b></div>
+      <div class="row"><a class="badge" href="/">Voltar ao início</a></div>
+    </div>
+
+    <div class="card">
+      <h2>Login Admin</h2>
+      <div class="row">
+        <input id="email" placeholder="admin email" value="admin@local"/>
+        <input id="pass" type="password" placeholder="senha" value="admin123"/>
+        <button class="pri" onclick="adminLogin()">Entrar</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Estatísticas</h2>
+      <button onclick="loadStats()">Atualizar</button>
+      <pre id="stats" class="muted small"></pre>
+    </div>
+
+    <div class="card">
+      <h2>Usuários</h2>
+      <button onclick="loadUsers()">Atualizar</button>
+      <table id="users">
+        <thead><tr><th>ID</th><th>Nome</th><th>Email</th><th>Premium</th><th>Admin</th><th>Criado</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+  <script>
+    // admin actions use token after login
+  </script>
+</body>
+</html>
